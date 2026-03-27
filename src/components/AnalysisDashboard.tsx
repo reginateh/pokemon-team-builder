@@ -42,7 +42,7 @@ export const AnalysisDashboard = ({ team }: { team: Pokemon[] }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
-      {/* LEFT: AVERAGE STATS INSIGHT */}
+      {/* AVERAGE STATS INSIGHT */}
       <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex flex-col">
         <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
           <BarChart3 size={16} className="text-yellow-500" /> Team Average Stats
@@ -66,7 +66,7 @@ export const AnalysisDashboard = ({ team }: { team: Pokemon[] }) => {
         </div>
       </div>
 
-      {/* RIGHT: ROLE COMPOSITION */}
+      {/* ROLE COMPOSITION */}
       <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex flex-col">
         <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
           <Users size={16} className="text-yellow-500" /> Role Composition
@@ -102,7 +102,7 @@ export const AnalysisDashboard = ({ team }: { team: Pokemon[] }) => {
           ))}
         </div>
 
-        {/* Quick Insight Text */}
+        {/* Insight */}
         <div className="mt-8">
           <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
             Insights
