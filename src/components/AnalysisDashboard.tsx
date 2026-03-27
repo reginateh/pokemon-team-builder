@@ -1,6 +1,6 @@
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Pokemon } from '../types/Pokemon';
-import { calculateTeamWeaknesses, getTeamStats } from '../utils/AnalysisLogic';
+import { calculateTeamStrengths, calculateTeamWeaknesses, getTeamStats } from '../utils/AnalysisLogic';
 
 interface Props {
   team: Pokemon[];
@@ -10,15 +10,16 @@ export const AnalysisDashboard = ({ team }: Props) => {
   if (!team ||team.length === 0) return null;
 
   const weaknesses = calculateTeamWeaknesses(team);
+  const strengths = calculateTeamStrengths(team);
   const chartData = getTeamStats(team);
 
   // Simple recommendations logic
-  const recommendations = [];
-  if (team.length > 0 && !team.some(p => p.stats[5].base_stat > 100)) {
-    recommendations.push("Your team is quite slow. Consider adding a 'Speedster'.");
-  }
+  const recommendations: string[] = [];
   Object.entries(weaknesses).forEach(([type, count]) => {
     if (count >= 3) recommendations.push(`Multiple Pokémon are weak to ${type}!`);
+  });
+  Object.entries(strengths).forEach(([type, count]) => {
+    if (count >= 3) recommendations.push(`Multiple Pokémon are strong against ${type}!`);
   });
 
   return (
