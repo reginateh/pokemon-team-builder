@@ -3,7 +3,7 @@ import { Pokemon } from "./types/Pokemon";
 import { SearchBar } from "./components/SearchBar";
 import { TeamGrid } from "./components/TeamGrid";
 import { AnalysisDashboard } from "./components/AnalysisDashboard";
-import { ShieldCheck, Info, LayoutDashboard } from "lucide-react";
+import { ShieldCheck, Info, LayoutDashboard, Users } from "lucide-react";
 
 function App() {
   const [team, setTeam] = useState<Pokemon[]>([]);
@@ -52,46 +52,62 @@ function App() {
                 <div className="flex gap-3">
                   <Info className="w-5 h-5 text-yellow-500 shrink-0" />
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Search by name (e.g., "lucario"). Your team's
-                    strengths, weaknesses, and stat averages will update in
-                    real-time below.
+                    Search by name (e.g., "lucario"). Add up to 6 Pokémon to see
+                    live type coverage and stat analysis.
                   </p>
                 </div>
               </div>
             </section>
           </aside>
 
-          {/* 3. Main Content: Grid & Live Analysis */}
-          <div className="lg:col-span-8 space-y-4">
-            {team.length > 0 ? (
-              <section className="animate-in fade-in slide-in-from-bottom-6 duration-700">
-                <AnalysisDashboard team={team} />
-              </section>
-            ) : (
-              <div className="h-64 border-2 border-dashed border-slate-800 rounded-3xl flex flex-col items-center justify-center text-slate-600">
-                <p>Add a Pokémon to unlock team insights</p>
+          {/* Main Content Area */}
+          <div className="lg:col-span-8 space-y-12">
+            {/* 1. TEAM DISPLAY (NOW AT TOP) */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <Users className="w-6 h-6 text-yellow-500" />
+                  <h2 className="text-2xl font-black text-white uppercase tracking-tight">
+                    Current Squad
+                  </h2>
+                </div>
+                {team.length > 0 && (
+                  <button
+                    onClick={() => setTeam([])}
+                    className="text-xs text-slate-500 hover:text-red-400 transition-colors uppercase font-bold tracking-tighter"
+                  >
+                    Clear All
+                  </button>
+                )}
               </div>
-            )}
+              <TeamGrid team={team} onRemove={removeFromTeam} />
+            </section>
+
+            <div className="border-t border-slate-800" />
+
+            {/* 2. ANALYSIS DASHBOARD (NOW AT BOTTOM) */}
+            <section>
+              <div className="flex items-center gap-2 mb-6">
+                <LayoutDashboard className="w-6 h-6 text-yellow-500" />
+                <h2 className="text-2xl font-black text-white uppercase tracking-tight">
+                  Team Analysis
+                </h2>
+              </div>
+
+              {team.length > 0 ? (
+                <div className="animate-in fade-in slide-in-from-bottom-6 duration-700">
+                  <AnalysisDashboard team={team} />
+                </div>
+              ) : (
+                <div className="h-64 border-2 border-dashed border-slate-800 rounded-3xl flex flex-col items-center justify-center text-slate-600 bg-slate-800/20">
+                  <p className="font-medium">
+                    Add a Pokémon to unlock team insights
+                  </p>
+                </div>
+              )}
+            </section>
           </div>
         </div>
-        <div className="my-10 border-t border-slate-800" />
-        {/* Team Display Section */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-black text-white uppercase tracking-tight">
-              Current Squad
-            </h2>
-            {team.length > 0 && (
-              <button
-                onClick={() => setTeam([])}
-                className="text-xs text-slate-500 hover:text-red-400 transition-colors"
-              >
-                Clear All
-              </button>
-            )}
-          </div>
-          <TeamGrid team={team} onRemove={removeFromTeam} />
-        </section>
       </main>
     </div>
   );

@@ -23,8 +23,6 @@ export const AnalysisDashboard = ({ team }: Props) => {
 
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-xl p-6">
-      <h2 className="text-lg font-bold mb-6">Team Analysis</h2>
-      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {/* Stat Chart */}
         <div className="h-64">

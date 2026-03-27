@@ -27,8 +27,8 @@ export const getTeamStats = (team: Pokemon[]) => {
     { name: 'HP', total: 0 },
     { name: 'ATK', total: 0 },
     { name: 'DEF', total: 0 },
-    { name: 'SP_ATK', total: 0 },
-    { name: 'SP_DEF', total: 0 },
+    { name: 'SPA', total: 0 },
+    { name: 'SPD', total: 0 },
     { name: 'SPEED', total: 0 },
   ];
 
