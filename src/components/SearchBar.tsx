@@ -1,28 +1,64 @@
 import React, { useState } from 'react';
 import { Search, Loader2 } from 'lucide-react';
-import { Pokemon } from '../types/Pokemon';
+import { Pokemon, PokemonType } from '../types/Pokemon';
 
 interface SearchBarProps {
   onAdd: (pokemon: Pokemon) => void;
+  currentTeam: Pokemon[];
 }
 
-export const SearchBar = ({ onAdd }: SearchBarProps) => {
+const mapPokemonData = (data: any): Pokemon => {
+  return {
+    id: data.id,
+    name: data.name,
+    sprites: {
+      front_default: data.sprites.front_default
+    },
+    types: data.types.map((t: any) => t.type.name as PokemonType),
+    stats: data.stats.map((s: any) => ({
+      base_stat: s.base_stat,
+      stat: {
+        name: s.stat.name
+      }
+    })),
+    abilities: data.abilities.map((a: any) => ({
+      ability: {
+        name: a.ability.name
+      }
+    }))
+  };
+};
+
+export const SearchBar = ({ onAdd, currentTeam }: SearchBarProps) => {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query) return;
+    const searchName = query.toLowerCase().trim();
+    if (!searchName) return;
 
     setLoading(true);
     setError('');
 
+    if (currentTeam.length >= 6) {
+      setError("Your team is full! Remove a Pokémon first.");
+      setLoading(false);
+      return;
+    }
+
+    if (currentTeam.some(p => p.name.toLowerCase() === searchName)) {
+      setError(`${searchName} is already in your team!`);
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${query.toLowerCase().trim()}`);
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchName}`);
       if (!response.ok) throw new Error('Pokemon not found');
       const data = await response.json();
-      onAdd(data);
+      onAdd(mapPokemonData(data));
       setQuery('');
     } catch (err) {
       setError('Could not find that Pokemon');
